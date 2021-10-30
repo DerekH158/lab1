@@ -20,7 +20,7 @@ def setup(engine, schema_name):
         engine.execute(CreateSchema(schema_name))
 
 
-models.Base.metadata.create_all(bind="engine", checkfirst=True)
+    models.Base.metadata.create_all(bind="engine", checkfirst=True)
 
 
 def extract(table_name, engine):
@@ -29,10 +29,9 @@ def extract(table_name, engine):
     return df
 
 def customer_transform(df):
-    df1 = df[['sk_customer', 'firstname', 'lastname']]
+    df1 = df[['customer_id', 'firstname', 'lastname']]
     df1['Name'] = df1['firstname'] + df1['lastname']
     return df1
-
 
 def date_transform(df):
     df1 = df[['sk_date','quarter','year','month','day']]
@@ -41,15 +40,13 @@ def date_transform(df):
     df1['Year'] = pd.to_datetime(df1['sk_date']).year
     df1['Month'] = pd.to_datetime(df1['sk_date']).month
     df1['Day'] =  pd.to_datetime(df1['sk_date']).day
-
-    
     
 def staff_transform(df):
-    df1 = df[['sk_store', 'manager_staff_id','address_id','last_update']]
+    df1 = df[['store_id', 'manager_staff_id','address_id','last_update']]
     return df1
 
 def film_transform(df):
-    df1 = df[['sk_film','rating_code','file_duration','rental_duration','language','title']]
+    df1 = df[['film_id','rating_code','file_duration','rental_duration','language','release_year','title']]
     return df1
 
 def staff_transform(df):
@@ -57,15 +54,13 @@ def staff_transform(df):
     df1['Name'] = df1['firstname'] + df1['lastname']
     return df1
 
-
 def count_rentals(df):
     df1 = df.groupby('sk_date').count()
     return df1
 
 
 def loading(df, connect, postgresql_table = 'group1'):
-     connect.close()
-    engine.dispose()
+    connect.close()
 
        
 ############################## remining this part
@@ -77,44 +72,14 @@ def loading(df, connect, postgresql_table = 'group1'):
 #     print("database not connected")
    #     models.Base.metadata.create_all(engine)
    #     exit(); 
-        conn.close()
-        engine.dispose()
 
-exit();
+   #this line will not be needed if using Pandas for connections
+        #conn.close()
 
+def teardown(engine):
+    #pass
+    engine.dispose()
 
-
-
-
-
-
+#exit();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-if __name__ =='__main__':
-    Base.metadata.create_all(engine)
