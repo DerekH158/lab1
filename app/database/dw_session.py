@@ -7,8 +7,8 @@ host = os.environ["HOST"]
 port = os.environ["PORT"]
 user = os.environ["USER"]
 password = os.environ["PASSWORD"]
-db = os.environ["POSTGRESS_DW"]
-dbtype = "postgresql+psycopg2 "
+db = os.environ["DW"]
+dbtype = "postgresql+psycopg2"
 
 SQLALCHEMY_DATABASE_URL = f"{dbtype}://{user}:{password}@{host}:{port}/{db}"
 
